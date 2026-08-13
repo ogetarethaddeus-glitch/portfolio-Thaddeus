@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thaddeus — Aeronautical &amp; Mechatronics Engineer</title>
+<meta name="description" content="Portfolio of aeronautical engineering and embedded systems work: PSO-based morphing wing optimization, FEA, CAD, and embedded electronics projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEAE1;
+    --paper-2:#E4E0D3;
+    --ink:#2A2B27;
+    --ink-soft:#5B5C56;
+    --grid:#C9C4B5;
+    --teal:#1D6E63;
+    --teal-deep:#123F39;
+    --amber:#C97A2C;
+    --line:#B9B4A4;
+    --radius:2px;
+    --disp:'Space Grotesk',sans-serif;
+    --body:'IBM Plex Sans',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, var(--grid) 0px, var(--grid) 1px, transparent 1px, transparent 32px),
+      repeating-linear-gradient(90deg, var(--grid) 0px, var(--grid) 1px, transparent 1px, transparent 32px),
+      var(--paper);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.6;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
+
+  /* Datum / crosshair marker */
+  .datum{
+    width:14px;height:14px;border:1px solid var(--ink-soft);border-radius:50%;
+    position:relative;flex-shrink:0;
+  }
+  .datum::before,.datum::after{content:'';position:absolute;background:var(--ink-soft);}
+  .datum::before{left:50%;top:-4px;bottom:-4px;width:1px;transform:translateX(-50%);}
+  .datum::after{top:50%;left:-4px;right:-4px;height:1px;transform:translateY(-50%);}
+
+  /* Dimension-line divider */
+  .dim-line{display:flex;align-items:center;gap:10px;margin:0 0 8px;color:var(--ink-soft);}
+  .dim-line .track{flex:1;height:1px;background:var(--line);position:relative;}
+  .dim-line .track::before,.dim-line .track::after{
+    content:'';position:absolute;top:-4px;width:1px;height:9px;background:var(--line);
+  }
+  .dim-line .track::before{left:0;}
+  .dim-line .track::after{right:0;}
+  .dim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+
+  /* Nav */
+  header.site{
+    position:sticky;top:0;z-index:20;
+    background:rgba(237,234,225,0.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0;
+  }
+  .brand{font-family:var(--mono);font-weight:500;font-size:14px;letter-spacing:.06em;display:flex;align-items:center;gap:10px;}
+  .navlinks{display:flex;gap:28px;list-style:none;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .navlinks a{text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .15s ease;}
+  .navlinks a:hover,.navlinks a:focus-visible{border-color:var(--amber);}
+
+  /* Hero */
+  .hero{
+    position:relative;padding:120px 0 90px;overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(20,20,18,0.35) 0%, rgba(20,20,18,0.72) 60%, rgba(20,20,18,0.94) 100%),
+      url('images/hero-kenya-airways.jpg') center 30%/cover no-repeat;
+    color:var(--paper);
+  }
+  .hero .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:#E4B583;display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  }
+  .hero .eyebrow .datum{border-color:#E4B583;}
+  .hero .eyebrow .datum::before,.hero .eyebrow .datum::after{background:#E4B583;}
+  .hero h1{
+    font-family:var(--disp);font-weight:700;font-size:clamp(40px,7vw,76px);
+    line-height:0.98;letter-spacing:-0.01em;max-width:820px;color:var(--paper);
+  }
+  .hero .role{
+    font-family:var(--mono);font-size:15px;color:#D8D4C6;margin-top:18px;letter-spacing:.02em;
+  }
+  .hero p.lede{
+    max-width:560px;margin-top:26px;font-size:17px;color:#D8D4C6;
+  }
+  .hero .coords{
+    margin-top:44px;display:flex;gap:36px;flex-wrap:wrap;
+  }
+  .coord{font-family:var(--mono);font-size:12px;color:#B9B4A4;}
+  .coord b{display:block;font-family:var(--disp);font-weight:600;font-size:20px;color:var(--paper);margin-top:2px;}
+  .photo-band{
+    position:relative;height:260px;overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  }
+  .photo-band img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-band .cap{
+    position:absolute;bottom:14px;left:28px;font-family:var(--mono);font-size:11px;
+    color:var(--paper);background:rgba(20,20,18,0.55);padding:5px 10px;letter-spacing:.04em;
+  }
+
+  section{padding:64px 0;position:relative;}
+  section#about{padding-top:20px;}
+
+  /* Sections with a photo acting as background wash */
+  .bg-photo-section{
+    position:relative;isolation:isolate;color:var(--paper);
+  }
+  .bg-photo-section::before{
+    content:'';position:absolute;inset:0;z-index:-2;
+    background-size:cover;background-position:center;background-attachment:fixed;
+  }
+  .bg-photo-section::after{
+    content:'';position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(180deg, rgba(18,18,16,0.90) 0%, rgba(18,18,16,0.94) 100%);
+  }
+  #projects.bg-photo-section::before{background-image:url('images/night-engine-bw.jpg');}
+  #skills.bg-photo-section::before{background-image:url('images/window-wing-bw.jpg');}
+  .bg-photo-section .dim-label{color:#D8D4C6;}
+  .bg-photo-section .dim-line .track,.bg-photo-section .dim-line .track::before,.bg-photo-section .dim-line .track::after{background:#7A7669;}
+  .bg-photo-section .card{background:rgba(228,224,211,0.06);border-color:#7A7669;color:var(--paper);}
+  .bg-photo-section .card p{color:#C9C4B5;}
+  .bg-photo-section .card .title-block{border-top-color:#7A7669;}
+  .bg-photo-section .card .title-block .k{color:#B9B4A4;}
+  .bg-photo-section .card:hover{box-shadow:4px 4px 0 var(--amber);}
+  .bg-photo-section .spec-table tr{border-bottom-color:#5B5C56;}
+  .bg-photo-section .spec-table td.cat{color:#E4B583;}
+  .bg-photo-section .spec-table td:not(.cat){color:#D8D4C6;}
+  @media (max-width:760px){
+    .bg-photo-section::before{background-attachment:scroll;}
+  }
+  h2.section-title{
+    font-family:var(--disp);font-weight:600;font-size:28px;margin-bottom:26px;
+  }
+
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  .chip{
+    font-family:var(--mono);font-size:12px;padding:6px 12px;border:1px solid var(--line);
+    border-radius:20px;color:var(--ink-soft);letter-spacing:.02em;
+  }
+
+  /* Title-block sheet */
+  .sheet{
+    border:1px solid var(--ink);background:var(--paper-2);
+    margin-bottom:20px;
+  }
+  .sheet .sheet-body{padding:30px 30px 26px;}
+  .sheet h3{font-family:var(--disp);font-weight:600;font-size:24px;margin-bottom:6px;}
+  .sheet .subtitle{font-family:var(--mono);font-size:12.5px;color:var(--teal-deep);letter-spacing:.03em;margin-bottom:18px;}
+  .sheet p{color:var(--ink-soft);max-width:640px;}
+  .spec-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px;
+  }
+  .spec{border-left:2px solid var(--amber);padding-left:12px;}
+  .spec .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .spec .v{font-family:var(--disp);font-weight:600;font-size:18px;margin-top:3px;}
+  .figure-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;}
+  .figure{
+    border:1px dashed var(--line);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:center;padding:14px;background:var(--paper);
+  }
+  .title-block{
+    display:flex;border-top:1px solid var(--ink);font-family:var(--mono);font-size:11px;
+  }
+  .title-block div{
+    flex:1;padding:10px 14px;border-right:1px solid var(--ink);
+  }
+  .title-block div:last-child{border-right:none;}
+  .title-block .k{color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase;font-size:9.5px;margin-bottom:3px;}
+  .title-block .v{font-weight:500;}
+
+  /* Secondary project grid */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .card{border:1px solid var(--ink);background:var(--paper-2);display:flex;flex-direction:column;transition:transform .18s ease, box-shadow .18s ease;}
+  .card:hover{transform:translateY(-3px);box-shadow:4px 4px 0 var(--teal-deep);}
+  .card .card-body{padding:22px 20px;flex:1;}
+  .card .tag{
+    font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);
+  }
+  .card h4{font-family:var(--disp);font-weight:600;font-size:17px;margin:8px 0 8px;}
+  .card p{font-size:13.5px;color:var(--ink-soft);}
+  .card .title-block{border-top:1px solid var(--ink);}
+  .card .title-block div{padding:8px 10px;font-size:10px;}
+
+  /* Skills spec table */
+  .spec-table{width:100%;border-collapse:collapse;font-size:14px;}
+  .spec-table tr{border-bottom:1px solid var(--line);}
+  .spec-table td{padding:14px 10px;vertical-align:top;}
+  .spec-table td.cat{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--teal-deep);width:200px;
+  }
+
+  footer.site{
+    border-top:1px solid var(--ink);margin-top:40px;padding:40px 0 30px;
+  }
+  .footer-block{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+  .footer-block a{font-family:var(--mono);font-size:13px;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;}
+  .footer-block a:hover{border-color:var(--amber);}
+  .footer-note{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:26px;}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  @media (max-width:760px){
+    .navlinks{display:none;}
+    .spec-grid{grid-template-columns:1fr 1fr;}
+    .figure-row{grid-template-columns:1fr;}
+    .grid3{grid-template-columns:1fr;}
+    .title-block{flex-direction:column;}
+    .title-block div{border-right:none;border-bottom:1px solid var(--ink);}
+    .title-block div:last-child{border-bottom:none;}
+  }
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <nav>
+      <div class="brand"><span class="datum"></span> T. OGETARE NYABUTO — AERO / MECHATRONICS</div>
+      <ul class="navlinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#flagship">Flagship</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="datum"></span> SHEET 01 — PORTFOLIO INDEX</div>
+    <h1>Thaddeus<br>Ogetare Nyabuto</h1>
+    <div class="role">Aeronautical Engineering, Technical University of Kenya — Class of 2027</div>
+    <p class="lede">I design and build across the aero–electronics boundary: airfoil and structural optimization on one side, embedded control and CAD/manufacturing on the other. This is a working record of that.</p>
+    <div class="coords">
+      <div class="coord">DISCIPLINE<b>Aeronautical Eng.</b></div>
+      <div class="coord">FOCUS<b>Propulsion &amp; UAV systems</b></div>
+      <div class="coord">TOOLS<b>MATLAB · XFOIL · ANSYS</b></div>
+      <div class="coord">BASED IN<b>Nairobi, Kenya</b></div>
+    </div>
+  </div>
+</section>
+
+<div class="photo-band">
+  <img src="images/window-wing-bw.jpg" alt="View of an aircraft wing from a cabin window above the clouds">
+  <div class="cap">IN FLIGHT — WING PLANFORM VIEW</div>
+</div>
+
+<section id="about">
+  <div class="wrap">
+    <div class="dim-line"><span class="dim-label">01 — About</span><span class="track"></span></div>
+    <div class="reveal" style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+      <div style="flex:1;min-width:300px;">
+      <p style="font-size:16px;color:var(--ink-soft);">
+        Fifth-year aeronautical engineering student with hands-on depth in aerodynamic optimization,
+        finite element analysis, and embedded systems. As part of a group project (Group 9) I helped
+        combine particle swarm optimization with XFOIL to design a morphing-wing mechanism, validate
+        it under FEA, and deploy it on a physical servo-driven prototype — the full loop from
+        simulation to hardware. My individual final project is currently in progress. Outside of
+        coursework I build RC aircraft and small electronics projects, and I'm comfortable moving
+        between CAD, structural analysis, and firmware.
+      </p>
+      <div class="chips">
+        <span class="chip">MATLAB</span>
+        <span class="chip">XFOIL</span>
+        <span class="chip">ANSYS / FEA</span>
+        <span class="chip">SolidWorks</span>
+        <span class="chip">CATIA V5</span>
+        <span class="chip">Arduino / ESP8266</span>
+        <span class="chip">Particle Swarm Optimization</span>
+        <span class="chip">CNC / G-code</span>
+      </div>
+      </div>
+      <div style="width:280px;flex-shrink:0;">
+        <img src="images/airbus-maintenance.jpg" alt="Technicians working on an open aircraft nose section in a hangar" style="border:1px solid var(--ink);width:100%;">
+        <div class="title-block" style="border-top:1px solid var(--ink);">
+          <div><div class="k">Ref.</div><div class="v">Hands-on scope</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="flagship">
+  <div class="wrap">
+    <div class="dim-line"><span class="dim-label">02 — Flagship project</span><span class="track"></span></div>
+    <div class="sheet reveal">
+      <div class="sheet-body">
+        <div class="subtitle">GROUP PROJECT · GROUP 9</div>
+        <h3>PSO-based morphing wing optimization for a ScanEagle UAV proxy</h3>
+        <p>
+          A trailing-edge morphing mechanism for the SD7062 airfoil, optimized using particle swarm
+          optimization coupled to XFOIL across three flight regimes, then realized as a physical
+          cross-axis compliant flexure mechanism and validated under finite element analysis.
+        </p>
+        <div class="spec-grid">
+          <div class="spec"><div class="k">Airfoil</div><div class="v">SD7062</div></div>
+          <div class="spec"><div class="k">Optimizer</div><div class="v">PSO + XFOIL</div></div>
+          <div class="spec"><div class="k">Flight regimes</div><div class="v">3</div></div>
+          <div class="spec"><div class="k">Mechanism material</div><div class="v">Nylon 6/6</div></div>
+          <div class="spec"><div class="k">Peak von Mises stress</div><div class="v">27.952 MPa</div></div>
+          <div class="spec"><div class="k">Factor of safety</div><div class="v">3.04</div></div>
+        </div>
+        <div class="figure-row" style="grid-template-columns:1fr;">
+          <img src="images/fea-aero-coefficients.png" alt="Lift curve, drag polar, and efficiency comparison plots between baseline and morphed wing profiles" style="border:1px solid var(--line);width:100%;">
+        </div>
+        <p style="margin-top:18px;">
+          Deployment was handled by an Arduino-driven servo system using a precomputed lookup table
+          rather than live PSO — trading online optimization for deterministic, low-latency actuation
+          suited to flight hardware.
+        </p>
+        <div class="figure-row">
+          <div>
+            <img src="images/fea-single-flexure.png" alt="ANSYS static structural results for a single cross-axis flexure stage showing deformation and von Mises stress" style="border:1px solid var(--line);width:100%;aspect-ratio:auto;">
+            <div class="dim-line" style="margin-top:8px;"><span class="dim-label">Single flexure stage — FEA</span><span class="track"></span></div>
+          </div>
+          <div>
+            <img src="images/fea-entire-flexure.png" alt="Von Mises stress contour across the entire cross-axis flexure assembly" style="border:1px solid var(--line);width:100%;aspect-ratio:auto;">
+            <div class="dim-line" style="margin-top:8px;"><span class="dim-label">Full flexure assembly — FEA</span><span class="track"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="title-block">
+        <div><div class="k">Drawn by</div><div class="v">T. Ogetare Nyabuto</div></div>
+        <div><div class="k">Date</div><div class="v">2026</div></div>
+        <div><div class="k">Scale</div><div class="v">N/A</div></div>
+        <div><div class="k">Sheet no.</div><div class="v">01 / 01</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="photo-band">
+  <img src="images/takeoff-bw.jpg" alt="Aircraft climbing steeply with twin contrails against a dark sky">
+  <div class="cap">CLIMB — TWIN CONTRAILS</div>
+</div>
+
+<section id="projects" class="bg-photo-section">
+  <div class="wrap">
+    <div class="dim-line"><span class="dim-label">03 — Secondary projects</span><span class="track"></span></div>
+    <div class="grid3 reveal">
+
+      <div class="card">
+        <div class="card-body">
+          <div class="tag">Manufacturing</div>
+          <h4>CNC stepped shaft program</h4>
+          <p>Fanuc/HNC-22T-compatible G-code for a stepped shaft including threading and grooving operations.</p>
+        </div>
+        <div class="title-block">
+          <div><div class="k">Type</div><div class="v">CAM</div></div>
+          <div><div class="k">Sheet</div><div class="v">02</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="tag">Controls</div>
+          <h4>Adaptive suspension architecture</h4>
+          <p>Comparative exploration of MR-damper suspension with skyhook control against LQR/MPC approaches.</p>
+        </div>
+        <div class="title-block">
+          <div><div class="k">Type</div><div class="v">Study</div></div>
+          <div><div class="k">Sheet</div><div class="v">03</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="tag">Embedded</div>
+          <h4>RC aircraft &amp; embedded electronics</h4>
+          <p>Hobbyist build experience spanning RC aircraft, 555-timer circuits, and ESP8266/Wemos-based projects.</p>
+        </div>
+        <div class="title-block">
+          <div><div class="k">Type</div><div class="v">Hardware</div></div>
+          <div><div class="k">Sheet</div><div class="v">04</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="bg-photo-section">
+  <div class="wrap">
+    <div class="dim-line"><span class="dim-label">04 — Specifications</span><span class="track"></span></div>
+    <table class="spec-table reveal">
+      <tr>
+        <td class="cat">Aerodynamics</td>
+        <td>XFOIL viscous/inviscid sweeps, polar interpolation, airfoil optimization pipelines, Reynolds-number scaling</td>
+      </tr>
+      <tr>
+        <td class="cat">Structures / FEA</td>
+        <td>ANSYS static and fatigue analysis, compliant mechanism design, factor-of-safety validation</td>
+      </tr>
+      <tr>
+        <td class="cat">CAD</td>
+        <td>SolidWorks, CATIA V5 — assemblies, drawings, axis systems</td>
+      </tr>
+      <tr>
+        <td class="cat">Manufacturing</td>
+        <td>CNC G-code generation (Fanuc / HNC-22T), tolerancing for fabricated mechanisms</td>
+      </tr>
+      <tr>
+        <td class="cat">Embedded systems</td>
+        <td>Arduino, ESP8266/Wemos, servo control, sensor integration, lookup-table-driven actuation</td>
+      </tr>
+      <tr>
+        <td class="cat">Programming</td>
+        <td>MATLAB (scripting, optimization, plotting), C/C++ for embedded targets</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<div class="photo-band" style="height:220px;">
+  <img src="images/night-engine-bw.jpg" alt="Aircraft engine on the tarmac at night">
+</div>
+
+<footer class="site" id="contact">
+  <div class="wrap">
+    <div class="dim-line"><span class="dim-label">05 — Contact</span><span class="track"></span></div>
+    <div class="footer-block reveal">
+      <a href="mailto:ogetarethaddeus@gmail.com">ogetarethaddeus@gmail.com</a>
+      <a href="tel:+254790262576">+254 790 262 576</a>
+      <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/your-username" target="_blank" rel="noopener">GitHub</a>
+      <a href="#">Download resume (PDF)</a>
+    </div>
+    <div class="footer-note">SHEET 05 / 05 &nbsp;·&nbsp; Technical University of Kenya, Nairobi &nbsp;·&nbsp; Updated 2026</div>
+  </div>
+</footer>
+
+<script>
+  const items = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  items.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
