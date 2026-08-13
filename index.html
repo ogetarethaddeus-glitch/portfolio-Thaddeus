@@ -41,7 +41,6 @@
   img{max-width:100%;display:block;}
   .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
 
-  /* Datum / crosshair marker */
   .datum{
     width:14px;height:14px;border:1px solid var(--ink-soft);border-radius:50%;
     position:relative;flex-shrink:0;
@@ -50,7 +49,6 @@
   .datum::before{left:50%;top:-4px;bottom:-4px;width:1px;transform:translateX(-50%);}
   .datum::after{top:50%;left:-4px;right:-4px;height:1px;transform:translateY(-50%);}
 
-  /* Dimension-line divider */
   .dim-line{display:flex;align-items:center;gap:10px;margin:0 0 8px;color:var(--ink-soft);}
   .dim-line .track{flex:1;height:1px;background:var(--line);position:relative;}
   .dim-line .track::before,.dim-line .track::after{
@@ -60,7 +58,6 @@
   .dim-line .track::after{right:0;}
   .dim-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
 
-  /* Nav */
   header.site{
     position:sticky;top:0;z-index:20;
     background:rgba(237,234,225,0.92);backdrop-filter:blur(6px);
@@ -75,12 +72,11 @@
   .navlinks a{text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .15s ease;}
   .navlinks a:hover,.navlinks a:focus-visible{border-color:var(--amber);}
 
-  /* Hero */
   .hero{
     position:relative;padding:120px 0 90px;overflow:hidden;
     background:
       linear-gradient(180deg, rgba(20,20,18,0.35) 0%, rgba(20,20,18,0.72) 60%, rgba(20,20,18,0.94) 100%),
-      url('images/hero-kenya-airways.jpg') center 30%/cover no-repeat;
+      url('hero-kenya-airways.jpg') center 30%/cover no-repeat;
     color:var(--paper);
   }
   .hero .eyebrow{
@@ -116,7 +112,6 @@
   section{padding:64px 0;position:relative;}
   section#about{padding-top:20px;}
 
-  /* Sections with a photo acting as background wash */
   .bg-photo-section{
     position:relative;isolation:isolate;color:var(--paper);
   }
@@ -128,8 +123,8 @@
     content:'';position:absolute;inset:0;z-index:-1;
     background:linear-gradient(180deg, rgba(18,18,16,0.90) 0%, rgba(18,18,16,0.94) 100%);
   }
-  #projects.bg-photo-section::before{background-image:url('images/night-engine-bw.jpg');}
-  #skills.bg-photo-section::before{background-image:url('images/window-wing-bw.jpg');}
+  #projects.bg-photo-section::before{background-image:url('night-engine-bw.jpg');}
+  #skills.bg-photo-section::before{background-image:url('window-wing-bw.jpg');}
   .bg-photo-section .dim-label{color:#D8D4C6;}
   .bg-photo-section .dim-line .track,.bg-photo-section .dim-line .track::before,.bg-photo-section .dim-line .track::after{background:#7A7669;}
   .bg-photo-section .card{background:rgba(228,224,211,0.06);border-color:#7A7669;color:var(--paper);}
@@ -153,7 +148,6 @@
     border-radius:20px;color:var(--ink-soft);letter-spacing:.02em;
   }
 
-  /* Title-block sheet */
   .sheet{
     border:1px solid var(--ink);background:var(--paper-2);
     margin-bottom:20px;
@@ -183,7 +177,6 @@
   .title-block .k{color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase;font-size:9.5px;margin-bottom:3px;}
   .title-block .v{font-weight:500;}
 
-  /* Secondary project grid */
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
   .card{border:1px solid var(--ink);background:var(--paper-2);display:flex;flex-direction:column;transition:transform .18s ease, box-shadow .18s ease;}
   .card:hover{transform:translateY(-3px);box-shadow:4px 4px 0 var(--teal-deep);}
@@ -196,7 +189,6 @@
   .card .title-block{border-top:1px solid var(--ink);}
   .card .title-block div{padding:8px 10px;font-size:10px;}
 
-  /* Skills spec table */
   .spec-table{width:100%;border-collapse:collapse;font-size:14px;}
   .spec-table tr{border-bottom:1px solid var(--line);}
   .spec-table td{padding:14px 10px;vertical-align:top;}
@@ -265,7 +257,7 @@
 </section>
 
 <div class="photo-band">
-  <img src="images/window-wing-bw.jpg" alt="View of an aircraft wing from a cabin window above the clouds">
+  <img src="window-wing-bw.jpg" alt="View of an aircraft wing from a cabin window above the clouds">
   <div class="cap">IN FLIGHT — WING PLANFORM VIEW</div>
 </div>
 
@@ -295,7 +287,7 @@
       </div>
       </div>
       <div style="width:280px;flex-shrink:0;">
-        <img src="images/airbus-maintenance.jpg" alt="Technicians working on an open aircraft nose section in a hangar" style="border:1px solid var(--ink);width:100%;">
+        <img src="airbus-maintenance.jpg" alt="Technicians working on an open aircraft nose section in a hangar" style="border:1px solid var(--ink);width:100%;">
         <div class="title-block" style="border-top:1px solid var(--ink);">
           <div><div class="k">Ref.</div><div class="v">Hands-on scope</div></div>
         </div>
@@ -325,7 +317,7 @@
           <div class="spec"><div class="k">Factor of safety</div><div class="v">3.04</div></div>
         </div>
         <div class="figure-row" style="grid-template-columns:1fr;">
-          <img src="images/fea-aero-coefficients.png" alt="Lift curve, drag polar, and efficiency comparison plots between baseline and morphed wing profiles" style="border:1px solid var(--line);width:100%;">
+          <img src="fea-aero-coefficients.png" alt="Lift curve, drag polar, and efficiency comparison plots between baseline and morphed wing profiles" style="border:1px solid var(--line);width:100%;">
         </div>
         <p style="margin-top:18px;">
           Deployment was handled by an Arduino-driven servo system using a precomputed lookup table
@@ -334,11 +326,11 @@
         </p>
         <div class="figure-row">
           <div>
-            <img src="images/fea-single-flexure.png" alt="ANSYS static structural results for a single cross-axis flexure stage showing deformation and von Mises stress" style="border:1px solid var(--line);width:100%;aspect-ratio:auto;">
+            <img src="fea-single-flexure.png" alt="ANSYS static structural results for a single cross-axis flexure stage showing deformation and von Mises stress" style="border:1px solid var(--line);width:100%;aspect-ratio:auto;">
             <div class="dim-line" style="margin-top:8px;"><span class="dim-label">Single flexure stage — FEA</span><span class="track"></span></div>
           </div>
           <div>
-            <img src="images/fea-entire-flexure.png" alt="Von Mises stress contour across the entire cross-axis flexure assembly" style="border:1px solid var(--line);width:100%;aspect-ratio:auto;">
+            <img src="fea-entire-flexure.png" alt="Von Mises stress contour across the entire cross-axis flexure assembly" style="border:1px solid var(--line);width:100%;aspect-ratio:auto;">
             <div class="dim-line" style="margin-top:8px;"><span class="dim-label">Full flexure assembly — FEA</span><span class="track"></span></div>
           </div>
         </div>
@@ -354,7 +346,7 @@
 </section>
 
 <div class="photo-band">
-  <img src="images/takeoff-bw.jpg" alt="Aircraft climbing steeply with twin contrails against a dark sky">
+  <img src="takeoff-bw.jpg" alt="Aircraft climbing steeply with twin contrails against a dark sky">
   <div class="cap">CLIMB — TWIN CONTRAILS</div>
 </div>
 
@@ -436,7 +428,7 @@
 </section>
 
 <div class="photo-band" style="height:220px;">
-  <img src="images/night-engine-bw.jpg" alt="Aircraft engine on the tarmac at night">
+  <img src="night-engine-bw.jpg" alt="Aircraft engine on the tarmac at night">
 </div>
 
 <footer class="site" id="contact">
